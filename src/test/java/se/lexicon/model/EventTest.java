@@ -1,5 +1,6 @@
 package se.lexicon.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
@@ -8,27 +9,44 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class EventTest {
 
+    public static final LocalTime START = LocalTime.of(10, 00);
+    public static final LocalTime END = LocalTime.of(11, 00);
+    public static final String EVENT_DESCRIPTION = "Test Description";
+    private Event testObject;
 
-    @Test
-    public void test_event_successfully_created(){
-        LocalTime start = LocalTime.of(10,00);
+
+
+    @BeforeEach
+    public void setUp(){
         int durationInMinutes = 60;
-        String eventDescription = "Test Description";
-        LocalTime expectedEnd = LocalTime.of(11,00);
-        Event testObject = new Event(start,durationInMinutes,eventDescription);
-
-        assertNotNull(testObject.getEventId());
-        assertEquals(start, testObject.getStart());
-        assertEquals(expectedEnd, testObject.getEnd());
-        assertEquals(eventDescription, testObject.getEventDescription());
-        String toString = testObject.toString();
-        assertTrue(
-                toString.contains(start.toString())
-                        && toString.contains(expectedEnd.toString())
-                        && toString.contains(testObject.getEventId())
-                        && toString.contains(eventDescription)
-                );
+        testObject = new Event(START,durationInMinutes, EVENT_DESCRIPTION);
     }
 
 
+    @Test
+    public void test_event_successfully_created(){
+        assertNotNull(testObject.getEventId());
+        assertEquals(START, testObject.getStart());
+        assertEquals(END, testObject.getEnd());
+        assertEquals(EVENT_DESCRIPTION, testObject.getEventDescription());
+        String toString = testObject.toString();
+        assertTrue(
+                toString.contains(START.toString())
+                        && toString.contains(END.toString())
+                        && toString.contains(testObject.getEventId())
+                        && toString.contains(EVENT_DESCRIPTION)
+                );
+    }
+
+   @Test
+    public void set_start_to_after_end_throws_IllegalArgumentException(){
+        assertThrows(IllegalArgumentException.class,
+                () -> testObject.setStart(LocalTime.of(11,01)));
+    }
+
+    @Test
+    public void set_end_to_before_start_throws_IllegalArgumentException(){
+        assertThrows(IllegalArgumentException.class,
+                () -> testObject.setEnd(LocalTime.of(9,59)));
+    }
 }

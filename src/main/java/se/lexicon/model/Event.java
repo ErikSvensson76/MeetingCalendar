@@ -11,9 +11,10 @@ public class Event {
     private String eventDescription;
 
     public Event(String eventId, LocalTime start, LocalTime end, String eventDescription) {
+        if(start.equals(end) || start.isAfter(end)) throw new IllegalArgumentException("Invalid initialization: " + start + " is equals to " + end + " or after");
         this.eventId = eventId;
-        setStart(start);
-        setEnd(end);
+        this.start = start;
+        this.end = end;
         setEventDescription(eventDescription);
     }
 
@@ -30,6 +31,7 @@ public class Event {
     }
 
     public void setStart(LocalTime start) {
+        if(start.isAfter(end) || start.equals(end)) throw new IllegalArgumentException("Start: " + start + " can not be after end: " + end + " or same.");
         this.start = start;
     }
 
@@ -38,6 +40,7 @@ public class Event {
     }
 
     public void setEnd(LocalTime end) {
+        if(end.isBefore(start) || end.equals(start)) throw new IllegalArgumentException("End: " + end + " can not be before start: " + start + " or same.");
         this.end = end;
     }
 
