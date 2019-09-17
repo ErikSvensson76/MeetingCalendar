@@ -42,11 +42,23 @@ public class EventTest {
     public void set_start_to_after_end_throws_IllegalArgumentException(){
         assertThrows(IllegalArgumentException.class,
                 () -> testObject.setStart(LocalTime.of(11,01)));
+
+        assertThrows(IllegalArgumentException.class,
+                ()-> testObject.setStart(END));
     }
 
     @Test
     public void set_end_to_before_start_throws_IllegalArgumentException(){
         assertThrows(IllegalArgumentException.class,
                 () -> testObject.setEnd(LocalTime.of(9,59)));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> testObject.setEnd(START));
+    }
+
+    @Test
+    public void set_end_and_start_to_valid_LocalTime_not_throws_IllegalArgumentException(){
+        assertDoesNotThrow(() -> testObject.setStart(LocalTime.of(8,00)));
+        assertDoesNotThrow(() -> testObject.setEnd(LocalTime.of(9, 00)));
     }
 }
