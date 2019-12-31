@@ -3,7 +3,7 @@ package se.lexicon.model;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public class Event {
+public class Event implements Comparable<Event>{
 
     private String eventId;
     private LocalTime start;
@@ -80,5 +80,10 @@ public class Event {
         sb.append(", eventDescription='").append(eventDescription).append('\'');
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public int compareTo(Event o) {
+        return start.compareTo(o.getStart());
     }
 }
